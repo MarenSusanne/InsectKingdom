@@ -2,7 +2,7 @@ namespace InsectKingdom;
 
 public class Fly : Bug
 {
-    public Fly() : base(true, false, 6, "spread illness")
+    public Fly() : base("House Fly", true, false, 6, "spread illness")
     {
     }
 }
