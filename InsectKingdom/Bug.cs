@@ -27,4 +27,7 @@ public class Bug
 				Console.WriteLine($"Legs: {_hasLegs}");
 				Console.WriteLine($"Annoying trait: {_isAnnoying}");
 		}
+
+		public bool SucksBlood() => _suckBlood;
+		public bool CanFly() => _canFly;
 }

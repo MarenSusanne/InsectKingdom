@@ -1,8 +1,6 @@
-using System.Collections.Generic;
-
 namespace InsectKingdom;
 
-public class Menu
+internal class Menu
 {
     public void MainMenu()
     {
@@ -12,7 +10,8 @@ public class Menu
             Console.WriteLine("1. See all bugs");
             Console.WriteLine("2. Add more bugs");
             Console.WriteLine("3. Remove a bug");
-            Console.WriteLine("4. Log out");
+            Console.WriteLine("4. Filter bugs");
+            Console.WriteLine("5. Log out");
 
             int input = GetInput();
             var bugs = BugManager.GetBugs();
@@ -44,9 +43,47 @@ public class Menu
                     Console.WriteLine($"You have removed {removedBugs}");
                     break;
                 case 4:
+                    ShowFilterMenu();
+                    break;
+                case 5:
                     Environment.Exit(0);
                     break;
             }
+        }
+    }
+
+    private void ShowFilterMenu()
+    {
+        FilterOption[] options = {
+                        new FilterOption(false, "Sucks blood"),
+                        new FilterOption(false, "Can fly"),
+                };
+        while (true)
+        {
+            Console.WriteLine("Toggle filters");
+            for (int i = 0; i < options.Count(); i++)
+            {
+                Console.WriteLine($"{i}. {options[i].Print()}");
+            }
+
+            int input = GetInput();
+            if (input < 0 || input >= options.Count())
+            {
+                Console.WriteLine("Invalid input");
+                return;
+            }
+
+            options[input].Toggle();
+            List<string> opts = new List<string>();
+            foreach (var item in options)
+            {
+                if (item.IsToggled())
+                {
+                    opts.Add(item.GetName());
+                }
+            }
+						Console.Clear();
+            ShowInsectsFiltered(BugManager.GetBugs(), opts);
         }
     }
 
@@ -67,7 +104,7 @@ public class Menu
                 BugManager.AddButterfly(species);
                 break;
             case "mosquito":
-               BugManager.AddMosquito(species);
+                BugManager.AddMosquito(species);
                 break;
             case "wasp":
                 BugManager.AddWasp(species);
@@ -80,16 +117,32 @@ public class Menu
                 break;
         }
     }
-    
+
     private void ShowInsects(List<Bug> bugs)
     {
         for (int i = 0; i < bugs.Count(); i++)
         {
             Console.WriteLine($"{i + 1}. {bugs[i].GetSpecies()}");
         }
+    }
 
-
-        
+    private void ShowInsectsFiltered(List<Bug> bugs, List<string> filter)
+    {
+        for (int i = 0; i < bugs.Count(); i++)
+        {
+            if (filter.Count() == 0)
+            {
+                Console.WriteLine($"{i + 1}. {bugs[i].GetSpecies()}");
+            }
+            else if (filter.Contains("Sucks blood") && bugs[i].SucksBlood() && filter.Contains("Can fly") && bugs[i].CanFly())
+            {
+                Console.WriteLine($"{i + 1}. {bugs[i].GetSpecies()}");
+            }
+            else if (filter.Contains("Sucks blood") && bugs[i].SucksBlood() || filter.Contains("Can fly") && bugs[i].CanFly())
+            {
+                Console.WriteLine($"{i + 1}. {bugs[i].GetSpecies()}");
+            }
+        }
     }
 
     private int GetInputForBugs(List<Bug> bugs)
