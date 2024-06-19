@@ -4,9 +4,10 @@ public class Spider : Bug
 {
     private string _goodStuff;
 
-    public Spider() : base("Black Widow", false, false, 8, "can bite humans")
+    public Spider(string species) : base(species, false, false, 8, "can bite humans")
     {
         _goodStuff = "eats flies and mite";
+        
     }
 
 		public override void PrintInfo()

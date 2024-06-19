@@ -2,7 +2,8 @@
 
 public class Butterfly : Bug
 {
-	public Butterfly() : base("Butterfly", true, false, 6, "eats plants")
+	public Butterfly(string species) : base(species, true, false, 6, "eats plants")
     {
 	}
+	
 }

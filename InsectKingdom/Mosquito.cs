@@ -4,7 +4,7 @@ public class Mosquito : Bug
 {
     
     
-    public Mosquito() : base("Mosquito", true, true, 6, "itching")
+    public Mosquito(string species) : base(species, true, true, 6, "itching")
     {
         
     }
