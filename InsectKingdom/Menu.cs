@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace InsectKingdom;
 
 public class Menu
@@ -9,22 +11,40 @@ public class Menu
             Console.WriteLine("Menu:");
             Console.WriteLine("1. See all bugs");
             Console.WriteLine("2. Add more bugs");
-            Console.WriteLine("3. Log out");
+            Console.WriteLine("3. Remove a bug");
+            Console.WriteLine("4. Log out");
 
             int input = GetInput();
-            Console.WriteLine();
-            Console.WriteLine();
+            var bugs = BugManager.GetBugs();
 
             switch (input)
             {
                 case 1:
-                    ShowInsects(BugManager.GetBugs());
+                    Console.WriteLine("Pick a number to get more info");
+                    ShowInsects(bugs);
+                    var i = GetInputForBugs(bugs);
+                    if (i == -1)
+                    {
+                        break;
+                    }
+                    bugs[i - 1].PrintInfo();
                     break;
                 case 2:
                     AddBug();
                     break;
                 case 3:
-
+                    Console.WriteLine("Pick the number of the bug you want to remove");
+                    ShowInsects(bugs);
+                    var j = GetInputForBugs(bugs);
+                    if (j == -1)
+                    {
+                        break;
+                    }
+                    var removedBugs = BugManager.RemoveInsects(j - 1);
+                    Console.WriteLine($"You have removed {removedBugs}");
+                    break;
+                case 4:
+                    Environment.Exit(0);
                     break;
             }
         }
@@ -68,21 +88,27 @@ public class Menu
             Console.WriteLine($"{i + 1}. {bugs[i].GetSpecies()}");
         }
 
+
+        
+    }
+
+    private int GetInputForBugs(List<Bug> bugs)
+    {
         int input = GetInput();
-        Console.WriteLine();
-        Console.WriteLine();
         if (input < 1 || input >= bugs.Count() + 1)
         {
             Console.WriteLine("Invalid input");
-            return;
+            return -1;
         }
 
-        bugs[input - 1].PrintInfo();
+        return input;
     }
 
     private int GetInput()
     {
-        return Console.ReadKey().KeyChar - '0';
+        var input = Console.ReadKey().KeyChar - '0';
+        Console.Clear();
+        return input;
     }
 
     private string PromptUser(string text)
@@ -91,15 +117,4 @@ public class Menu
         return Console.ReadLine();
     }
 
-    private bool StringToBool(string input)
-    {
-        switch (input.ToLower())
-        {
-            case "yes":
-            case "true":
-                return true;
-            default:
-                return false;
-        }
-    }
 }

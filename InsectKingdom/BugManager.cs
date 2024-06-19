@@ -48,4 +48,11 @@ public static class BugManager
     {
         _bugList.Add(new Butterfly(species));
     }
+
+    public static string RemoveInsects(int index)
+    {
+        var bug = _bugList[index];
+        _bugList.RemoveAt(index);
+        return bug.GetSpecies();
+    }
 }
